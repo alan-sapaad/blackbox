@@ -1,0 +1,68 @@
+import { test, expect } from '@playwright/test';
+
+test('Sapaad POS', async ({ page }) => {
+
+  // Go to https://pos-review.sapaad.com/
+  await page.goto('https://pos-review.sapaad.com/');
+
+  // Click [placeholder="Email Address"]
+  await page.locator('[placeholder="Email Address"]').click();
+
+  // Fill [placeholder="Email Address"]
+  await page.locator('[placeholder="Email Address"]').fill('account_31@sapaad.com');
+
+  // Click [placeholder="Password"]
+  await page.locator('[placeholder="Password"]').click();
+
+  // Fill [placeholder="Password"]
+  await page.locator('[placeholder="Password"]').fill('sapaad123@');
+
+  // Click text=Sign-in
+  await page.locator('text=Sign-in').click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/dashboard');
+
+  // Click text=Close
+  await page.locator('text=Close').click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/dashboard#');
+
+  // Click text=Walk-In >> nth=0
+  await page.locator('text=Walk-In').first().click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/walkin?_admin');
+
+  // Click text=Abu Dhabi
+  await page.locator('text=Abu Dhabi').click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/walkin?_ln=4675');
+
+  // Click #posButtonContainer >> text=VEGETABLE PANINI
+  await page.locator('#posButtonContainer >> text=VEGETABLE PANINI').click();
+
+  // Click text=Turkey Burger
+  await page.locator('text=Turkey Burger').click();
+
+  // Click text=Place Order >> nth=0
+  await page.locator('text=Place Order').first().click();
+
+  // Click #checkLoyaltyPayment >> text=Visa Card
+  await page.locator('#checkLoyaltyPayment >> text=Visa Card').click();
+
+  // Click #ptype-id_7823 img
+  await page.locator('#ptype-id_7823 img').click();
+
+  // Click a:has-text("Pay") >> nth=4
+  const [page1] = await Promise.all([
+    page.waitForEvent('popup'),
+    page.locator('a:has-text("Pay")').nth(4).click()
+  ]);
+
+  // Click text=Walk-In Send receipt by email OK >> a
+  await page.locator('text=Walk-In Send receipt by email OK >> a').click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/walkin?_ln=4675');
+
+  // Click .dropdown-toggle.tourSetup > .fa
+  await page.locator('.dropdown-toggle.tourSetup > .fa').click();
+
+  // Click text=Log out >> nth=1
+  await page.locator('text=Log out').nth(1).click();
+  await expect(page).toHaveURL('https://pos-review.sapaad.com/');
+
+});
