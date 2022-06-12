@@ -9,6 +9,9 @@ test('Sales Dashboard @dashboard', async ({ page }) => {
   await page.locator('text=Sales').click();
   await expect(page).toHaveURL('https://sapaad-reporting-ms-review.herokuapp.com/sales');
 
+  // Take a screenshot
+  await page.screenshot({ path: 'artifacts/screenshot.png', fullPage: true });
+
   // Make sure the list now has two todo items.
   await expect(page.locator('h1')).toHaveText('Sales');
 });
